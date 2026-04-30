@@ -5,11 +5,87 @@
 
 import { Item, ItemType } from '../types';
 
+export const SYNERGY_MAP: Record<string, { traits: string[]; bonusItems?: Item[] }> = {
+  'Demon-Paladin': {
+    traits: ['darkvision', 'hellknight', 'fireSmite'],
+    bonusItems: [
+      {
+        id: `synergy-infernal-blade-${Date.now()}`,
+        name: 'Infernal Blade',
+        type: 'weapon',
+        description: 'A demon-forged paladin blade that sears enemies.',
+        stats: { atk: 5 },
+        rarity: 'rare',
+        range: 1,
+      }
+    ],
+  },
+  'Elf-Ranger': {
+      traits: ['darkvision', 'elvenAccuracy'],
+      bonusItems: [
+          {
+              id: `synergy-leaf-armor-${Date.now()}`,
+              name: 'Leaf-Woven Tunic',
+              type: 'armor',
+              description: 'Lightweight armor that blends with the shadows.',
+              stats: { def: 2, dexterity: 2 },
+              rarity: 'uncommon'
+          }
+      ]
+  },
+  'Dragonborn-Barbarian': {
+      traits: ['breathWeapon', 'unarmoredDefense'],
+      bonusItems: [
+          {
+              id: `synergy-draconic-axe-${Date.now()}`,
+              name: 'Drake-Glass Greataxe',
+              type: 'weapon',
+              description: 'A heavy axe infused with draconic heat.',
+              stats: { atk: 6 },
+              rarity: 'rare'
+          }
+      ]
+  },
+  'Tiefling-Warlock': {
+      traits: ['darkvision', 'hellishRebuke'],
+      bonusItems: [
+          {
+              id: `synergy-fiendish-staff-${Date.now()}`,
+              name: 'Obsidian Staff',
+              type: 'weapon',
+              description: 'Channels eldritch energy from the abyss.',
+              stats: { intelligence: 3, atk: 4 },
+              rarity: 'rare',
+              range: 5
+          }
+      ]
+  }
+};
+
 export function getStarterItems(race: string, pClass: string): Item[] {
   const timestamp = Date.now();
   const items: Item[] = [];
 
-  if (race === 'Elf') {
+  // Every character gets a basic ranged weapon
+  items.push({
+    id: `starter-sling-${timestamp}`,
+    name: 'Hunting Sling',
+    type: 'weapon',
+    description: 'A simple leather sling for throwing stones.',
+    stats: { atk: 1 },
+    rarity: 'common',
+    range: 6
+  });
+
+  // Synergy logic
+  const key = `${race}-${pClass}`;
+  const synergy = SYNERGY_MAP[key];
+  if (synergy?.bonusItems) {
+      items.push(...synergy.bonusItems);
+  }
+
+  // Race Based Items
+  if (race === 'Elf' || race === 'Half-Elf') {
     items.push({
       id: `starter-bow-${timestamp}`,
       name: 'Elven Longbow',
@@ -19,79 +95,119 @@ export function getStarterItems(race: string, pClass: string): Item[] {
       rarity: 'uncommon',
       range: 8
     });
-  } else if (race === 'Demon') {
+  } else if (race === 'Dragonborn') {
       items.push({
-          id: `starter-fireball-${timestamp}`,
-          name: 'Infernal Tome',
-          type: 'weapon',
-          description: 'Allows casting Fireball.',
-          stats: { intelligence: 2, atk: 5 },
-          rarity: 'rare',
-          range: 6
+          id: `starter-scale-${timestamp}`,
+          name: 'Dragon Scale Scraps',
+          type: 'material',
+          description: 'Used for hardening equipment.',
+          rarity: 'uncommon'
       });
-  } else if (pClass === 'Paladin') {
-    items.push({
-      id: `starter-sword-${timestamp}`,
-      name: 'Holy Avenger',
-      type: 'weapon',
-      description: 'A glowing blade of justice.',
-      stats: { atk: 4 },
-      rarity: 'rare',
-      range: 4
-    });
-    items.push({
-        id: `starter-shield-${timestamp}`,
-        name: 'Paladin Shield',
-        type: 'armor',
-        description: 'A heavy steel shield.',
-        stats: { def: 3 },
-        rarity: 'uncommon'
-    });
-  } else if (race === 'Orc') {
+  } else if (race === 'Tiefling') {
       items.push({
-          id: `starter-crossbow-${timestamp}`,
-          name: 'Heavy Crossbow',
+          id: `starter-tome-${timestamp}`,
+          name: 'Infernal Primer',
           type: 'weapon',
-          description: 'A powerful mechanical bow.',
-          stats: { atk: 4 },
-          rarity: 'uncommon',
-          range: 8
-      });
-      items.push({
-          id: `starter-mace-${timestamp}`,
-          name: 'Spiked Mace',
-          type: 'weapon',
-          description: 'A brutal crushing weapon.',
-          stats: { atk: 3 },
-          rarity: 'common'
+          description: 'Basic demonic magic.',
+          stats: { intelligence: 1, atk: 3 },
+          rarity: 'common',
+          range: 4
       });
   } else if (race === 'Dwarf') {
-      items.push({
-          id: `starter-taxe-${timestamp}`,
-          name: 'Throwing Axe',
-          type: 'weapon',
-          description: 'Balanced for throwing.',
-          stats: { atk: 3 },
-          rarity: 'common',
-          range: 5
-      });
       items.push({
           id: `starter-baxe-${timestamp}`,
           name: 'Battle Axe',
           type: 'weapon',
-          description: 'Heavy two-handed axe.',
+          description: 'Solid dwarven steel.',
           stats: { atk: 5 },
           rarity: 'uncommon'
       });
-  } else {
+  } else if (race === 'Half-Orc') {
+      items.push({
+          id: `starter-club-${timestamp}`,
+          name: 'Iron-Spiked Club',
+          type: 'weapon',
+          description: 'Simple and effective.',
+          stats: { atk: 4 },
+          rarity: 'common'
+      });
+  }
+
+  // Class Based Items
+  if (pClass === 'Paladin' || pClass === 'Cleric') {
     items.push({
-        id: `starter-dagger-${timestamp}`,
-        name: 'Dagger',
-        type: 'weapon',
-        description: 'Standard issue dagger.',
-        stats: { atk: 2 },
+      id: `starter-mace-${timestamp}`,
+      name: 'Holy Mace',
+      type: 'weapon',
+      description: 'Blessed by the gods.',
+      stats: { atk: 4 },
+      rarity: 'uncommon'
+    });
+    items.push({
+        id: `starter-shield-${timestamp}`,
+        name: 'Iron Shield',
+        type: 'armor',
+        description: 'Standard shield.',
+        stats: { def: 2 },
         rarity: 'common'
     });
+  } else if (pClass === 'Wizard' || pClass === 'Sorcerer') {
+      items.push({
+          id: `starter-staff-${timestamp}`,
+          name: 'Willow Wand',
+          type: 'weapon',
+          description: 'Focuses minor spells.',
+          stats: { intelligence: 2, atk: 2 },
+          rarity: 'common',
+          range: 5
+      });
+  } else if (pClass === 'Rogue' || pClass === 'Bard') {
+      items.push({
+          id: `starter-rapier-${timestamp}`,
+          name: 'Slim Rapier',
+          type: 'weapon',
+          description: 'Fast and graceful.',
+          stats: { atk: 3, dexterity: 1 },
+          rarity: 'uncommon'
+      });
+  } else if (pClass === 'Barbarian' || pClass === 'Fighter') {
+      items.push({
+          id: `starter-sword-${timestamp}`,
+          name: 'Soldier\'s Blade',
+          type: 'weapon',
+          description: 'Reliable iron sword.',
+          stats: { atk: 4 },
+          rarity: 'common'
+      });
+  } else if (pClass === 'Monk') {
+      items.push({
+          id: `starter-fist-${timestamp}`,
+          name: 'Weighted Wraps',
+          type: 'weapon',
+          description: 'Strengthens your punches.',
+          stats: { atk: 3, dexterity: 1 },
+          rarity: 'uncommon'
+      });
+  } else if (pClass === 'Druid' || pClass === 'Ranger') {
+      items.push({
+          id: `starter-scimitar-${timestamp}`,
+          name: 'Curved Scimitar',
+          type: 'weapon',
+          description: 'A woodsman\'s blade.',
+          stats: { atk: 3 },
+          rarity: 'common'
+      });
+  }
+
+  if (items.length === 0) {
+      items.push({
+          id: `starter-dagger-${timestamp}`,
+          name: 'Dagger',
+          type: 'weapon',
+          description: 'Standard issue dagger.',
+          stats: { atk: 2 },
+          rarity: 'common'
+      });
   }
 
   return items;
@@ -174,6 +290,9 @@ export function generateDrop(): Item | null {
 }
 
 export function disassembleItem(item: Item, userStats: any): Item[] {
+  // CRITICAL: Prevent disassembling materials/consumables to stop infinite loops
+  if (item.type === 'material' || item.type === 'consumable') return [];
+
   const userIntelligence = userStats.intelligence || 10;
   // Low intelligence check
   const failChance = Math.max(0, 0.5 - (userIntelligence / 40));

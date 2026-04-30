@@ -102,6 +102,24 @@ export function generateDungeon() {
     const c1 = rooms[i].center;
     const c2 = rooms[i + 1].center;
     carveCorridor(map, c1, c2);
+
+    // Add extra features to rooms
+    const r = rooms[i];
+    if (Math.random() > 0.7) {
+        const cx = r.x + 1 + Math.floor(Math.random() * (r.w - 2));
+        const cy = r.y + 1 + Math.floor(Math.random() * (r.h - 2));
+        map[cy][cx] = TileType.CHEST;
+    }
+    if (Math.random() > 0.8) {
+        const ox = r.x + 1 + Math.floor(Math.random() * (r.w - 2));
+        const oy = r.y + 1 + Math.floor(Math.random() * (r.h - 2));
+        map[oy][ox] = TileType.OIL_PIT;
+    }
+    if (Math.random() > 0.8) {
+        const wx = r.x + 1 + Math.floor(Math.random() * (r.w - 2));
+        const wy = r.y + 1 + Math.floor(Math.random() * (r.h - 2));
+        map[wy][wx] = TileType.WATER_PIT;
+    }
   }
 
   // Stairs in last room

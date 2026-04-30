@@ -9,7 +9,8 @@ export enum TileType {
   STAIRS_DOWN = 'STAIRS_DOWN',
   VOID = 'VOID',
   CHEST = 'CHEST',
-  OIL_PIT = 'OIL_PIT'
+  OIL_PIT = 'OIL_PIT',
+  WATER_PIT = 'WATER_PIT'
 }
 
 export interface Point {
@@ -17,8 +18,8 @@ export interface Point {
   y: number;
 }
 
-export type Race = 'Human' | 'Elf' | 'Orc' | 'Demon' | 'Dwarf';
-export type Class = 'Paladin' | 'Ranger' | 'Wizard' | 'Fighter';
+export type Race = 'Human' | 'Elf' | 'Dwarf' | 'Halfling' | 'Dragonborn' | 'Gnome' | 'Half-Elf' | 'Half-Orc' | 'Tiefling';
+export type Class = 'Barbarian' | 'Bard' | 'Cleric' | 'Druid' | 'Fighter' | 'Monk' | 'Paladin' | 'Ranger' | 'Rogue' | 'Sorcerer' | 'Warlock' | 'Wizard';
 
 export interface Stats {
   hp: number;
@@ -33,6 +34,23 @@ export interface Stats {
   constitution: number;
   wisdom: number;
   charisma: number;
+}
+
+export interface CharacterSheet {
+  name: string;
+  race: Race;
+  pClass: Class;
+  stats: Stats;            // raw attributes (strength, dexterity, etc.)
+  modifiers: {
+    meleeAttack: number;   // (str-10)/2
+    rangedAttack: number;  // (dex-10)/2
+    defense: number;       // (dex-10)/2
+    spellPower: number;    // (int-10)/2
+    torchCraftBonus: number; // int modifier affects craft success
+    disassembleBonus: number;
+  };
+  racialTraits: string[];  // e.g. 'darkvision', 'elvenAccuracy'
+  classTraits: string[];   // e.g. 'smite', 'rangedSpecialist'
 }
 
 export type ItemType = 'weapon' | 'armor' | 'consumable' | 'trash' | 'material' | 'tool';
@@ -73,11 +91,13 @@ export interface GameState {
   player: Entity;
   playerRace: Race;
   playerClass: Class;
+  characterSheet: CharacterSheet | null;
   enemies: Entity[];
   itemsOnGround: GroundItem[];
   inventory: Item[];
   equipped: {
     weapon: Item | null;
+    ranged: Item | null;
     armor: Item | null;
   };
   map: TileType[][];
@@ -91,4 +111,12 @@ export interface GameState {
   isCharacterCreationOpen: boolean;
   lightLevel: number;
   hasDarkVision: boolean;
+  torchTimer: number;
+  shopOpen: boolean;
+  shopkeeper: {
+    inventory: Item[];
+    hostile: boolean;
+    position: Point;
+    stats?: Stats; // boss stats if hostile
+  } | null;
 }
