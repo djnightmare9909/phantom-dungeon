@@ -1,5 +1,5 @@
 {
-  "name": "Dungeon Crawler Roguelike",
+  "name": "Phantom Dungeon",
   "description": "A turn-based roguelike dungeon crawler with procedural generation, enemy AI, and field of view.",
   "requestFramePermissions": [],
   "majorCapabilities": []

@@ -1,6 +1,6 @@
-# 🗡️ Shadow Descent: The Elder Dungeon
+# 🛡️ Phantom Dungeon
 
-**Shadow Descent** is a high-fidelity, turn-based roguelike dungeon crawler built with React, Vite, and Tailwind CSS. Experience a deep character creation system based on classic RPG mechanics, procedural dungeon generation, and a strategic survival experience where light is your most precious resource.
+**Phantom Dungeon** is a high-fidelity, turn-based roguelike dungeon crawler built with React, Vite, and Tailwind CSS. Experience a deep character creation system based on classic RPG mechanics, procedural dungeon generation, and a strategic survival experience where light is your most precious resource.
 
 ![Project Banner](https://images.unsplash.com/photo-1614728263952-84ea206f99b6?q=80&w=1000&auto=format&fit=crop)
 
@@ -28,7 +28,7 @@
 1. **Clone the repository** (if applicable):
    ```bash
    git clone <repository-url>
-   cd shadow-descent
+   cd phantom-dungeon
    ```
 
 2. **Install dependencies**:
