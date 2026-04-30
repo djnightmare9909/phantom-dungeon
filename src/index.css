@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+  --font-mono: 'JetBrains Mono', ui-monospace, 'Courier New', monospace;
+}
+
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: black;
+}
